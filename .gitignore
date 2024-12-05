@@ -3,7 +3,6 @@ out/
 html/node_modules/
 html/dist
 html/.vscode/
-out.txt
 index.yml
 awesomes.yml
 __pycache__/

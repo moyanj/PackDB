@@ -1,0 +1,7 @@
+__pycache__/
+.venv/
+out/
+.cache/
+html/
+index.yml
+awesomes.yml

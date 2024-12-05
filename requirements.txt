@@ -8,3 +8,5 @@ requests
 whoosh
 tqdm
 baidu-translate-api
+fastapi
+uvicorn
