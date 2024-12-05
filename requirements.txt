@@ -1,0 +1,10 @@
+pyyaml
+pypandoc
+msgpack
+dicttoxml
+beautifulsoup4
+jieba_fast
+requests
+whoosh
+tqdm
+baidu-translate-api

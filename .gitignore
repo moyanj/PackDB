@@ -1,0 +1,12 @@
+out/
+.cache/
+html/node_modules/
+html/dist
+html/.vscode/
+out.txt
+index.yml
+awesomes.yml
+__pycache__/
+.venv/
+.index/
+html/src/assets/*.json
