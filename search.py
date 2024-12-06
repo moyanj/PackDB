@@ -8,7 +8,7 @@ from tqdm import tqdm
 from bs4 import BeautifulSoup
 import jieba_fast
 import os
-import json
+import yaml
 import hashlib
 import shutil
 import baidu_translate as fanyi
@@ -38,7 +38,7 @@ class Indexing:
         os.makedirs(".cache", exist_ok=True)
         self.index = create_in(".index", schema=PackageSchema)
         self.writer = self.index.writer()
-        self.db = json.load(open("out/db.json"))
+        self.db = yaml.load(open("db.yml"), yaml.CLoader)
 
     def make(self):
         n = 0

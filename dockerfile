@@ -1,31 +1,19 @@
 # 阶段 1: 构建阶段
-FROM python:3.12-slim AS builder
+FROM python:3.12 AS builder
 
 WORKDIR /app
 
 # 复制 requirements.txt 和 make 脚本
-COPY requirements.txt /app/
-COPY make /app/
+COPY . /app/
 
 # 使 make 脚本可执行
 RUN chmod +x /app/make
-
+#RUN apt update && apt install gcc -y
 # 安装依赖
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 
 # 构建索引
-RUN ./make
-
-# 阶段 2: 运行阶段
-FROM python:3.12-slim
-
-WORKDIR /app
-
-# 复制构建阶段的依赖和应用代码
-COPY --from=builder /app /app
-
-# 复制应用代码
-COPY . /app
+RUN python search.py
 
 # 删除不必要的文件和目录
 RUN rm -rf /app/.cache

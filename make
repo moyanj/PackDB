@@ -29,7 +29,7 @@ if os.path.exists("out"):
     shutil.rmtree("out")
 os.mkdir("out")
 
-subprocess.run([sys.executable, "rst2html.py"], check=True)
+subprocess.run([sys.executable, "search.py"], check=True)
 # 复制数据库配置文件到out目录
 shutil.copy("db.yml", "out/db.yml")
 shutil.copy("index.yml", "out/index.yml")
