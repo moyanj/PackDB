@@ -3,18 +3,22 @@ from whoosh.index import create_in, open_dir
 from whoosh.qparser import MultifieldParser
 from whoosh.analysis import StemmingAnalyzer
 from whoosh.sorting import ScoreFacet
-from jieba_fast.analyse import ChineseAnalyzer
 from tqdm import tqdm
 from bs4 import BeautifulSoup
-import jieba_fast
 import os
 import yaml
 import hashlib
 import shutil
 import baidu_translate as fanyi
 import asyncio
+try:
+    from jieba_fast.analyse import ChineseAnalyzer
+    import jieba_fast as jieba
+except:
+    from jieba.analyse import ChineseAnalyzer
+    import jieba
 
-jieba_fast.load_userdict("out.txt")
+jieba.load_userdict("out.txt")
 
 zh_analyzer = ChineseAnalyzer()
 en_analyzer = StemmingAnalyzer()

@@ -1,5 +1,5 @@
 # 阶段 1: 构建阶段
-FROM python:3.12 AS builder
+FROM python:3.12-alpine
 
 WORKDIR /app
 
@@ -10,10 +10,10 @@ COPY . /app/
 RUN chmod +x /app/make
 #RUN apt update && apt install gcc -y
 # 安装依赖
-RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+RUN pip install --no-cache-dir -r requirements-runtime.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 
 # 构建索引
-RUN python search.py
+RUN if [ ! -d "/app/.index" ]; then echo "Index does not exist, stopping build"; exit 1; fi
 
 # 删除不必要的文件和目录
 RUN rm -rf /app/.cache
