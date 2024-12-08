@@ -13,7 +13,16 @@ console.log(data)
 <template>
     <el-row>
         <el-card class="big-card summary">
-            <h3>{{ name }}</h3>
+            <el-row>
+                <el-col :span="17" :offset="1">
+                    <h3>{{ name }}</h3>
+                    <p>{{ data?.desc }}</p>
+                </el-col>
+                <el-col :span="6" class="center">
+                    <p>pip install {{ name }}</p>
+                </el-col>
+            </el-row>
+
         </el-card>
     </el-row>
     <el-row :gutter="0">
@@ -34,5 +43,12 @@ console.log(data)
 .summary {
     width: 100%;
     height: 25vh;
+}
+.center {
+    display: flex;
+    justify-content: center;
+    /* 水平居中 */
+    align-items: center;
+    /* 垂直居中 */
 }
 </style>
