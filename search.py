@@ -1,4 +1,4 @@
-from whoosh.fields import TEXT, SchemaClass
+from whoosh.fields import TEXT, SchemaClass, KEYWORD
 from whoosh.index import create_in, open_dir
 from whoosh.qparser import MultifieldParser
 from whoosh.analysis import StemmingAnalyzer
@@ -31,6 +31,7 @@ class PackageSchema(SchemaClass):
     pypi_desc_zh = TEXT(stored=True, analyzer=zh_analyzer)
     doc = TEXT(stored=True, analyzer=en_analyzer)
     doc_zh = TEXT(stored=True, analyzer=zh_analyzer)
+    hash = KEYWORD(stored=True)
 
 
 class Indexing:
@@ -59,6 +60,7 @@ class Indexing:
                 pypi_desc_zh=self.tran(data["pypi_desc"]),
                 doc=docs,
                 doc_zh=self.tran(docs),
+                hash=self.getHash(data["releases"])
             )
             n += 1
 
@@ -76,6 +78,15 @@ class Indexing:
             ret = soup.getText().replace("\n", " ")
             open(path, "w").write(ret)
             return ret
+        
+    def getHash(self, rels):
+        ret = []
+        for i in rels:
+            for f in i["files"]:
+                for h in f["digests"].values():
+                    ret.append(h)
+                    print(h)
+        return " ".join(ret)
 
     def tran(self, src: str):
         if not src:
