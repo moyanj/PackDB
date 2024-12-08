@@ -1,14 +1,18 @@
 import yaml
-import requests
+import asyncio
 import time
 import pypandoc
 import tqdm
 import os
 import hashlib
 import warnings
+import datetime
+import httpx
+import random
 
 # 忽略所有警告
 warnings.filterwarnings("ignore")
+
 
 class PackDB:
     def __init__(self, path):
@@ -18,7 +22,7 @@ class PackDB:
         os.makedirs(".cache", exist_ok=True)
 
     def load(self):
-        self.db = yaml.load(open(self.path), yaml.CFullLoader)
+        self.db = yaml.load(open(self.path), yaml.CLoader)
         if self.db is None:
             self.db = {}
 
@@ -26,20 +30,55 @@ class PackDB:
         yaml.dump(self.db, open(self.path, "w"), yaml.CDumper, allow_unicode=True)
         self.load()
 
-    def get_info(self, name: str):
-        response = requests.get(
-            f"https://mirrors.tuna.tsinghua.edu.cn/pypi/web/json/{name}"
-        )
+    async def get_info(self, name: str, max_retries=3) -> dict:
+        urls = [
+            f"https://mirrors.tuna.tsinghua.edu.cn/pypi/web/json/{name}",
+            f"https://mirrors.ustc.edu.cn/pypi/json/{name}",
+            f"https://mirrors.pku.edu.cn/pypi/web/json/{name}",
+            f"https://mirrors.bfsu.edu.cn/pypi/web/json/{name}",
+            f"https://mirrors.cloud.tencent.com/pypi/json/{name}",
+            f"https://mirrors.hust.edu.cn/pypi/web/json/{name}"
+        ]
+        async with httpx.AsyncClient() as client:
+            for attempt in range(max_retries + 1):
+                url = random.choice(urls)
+                #print(url)
+                try:
+                    response = await client.get(url, timeout=httpx.Timeout(10, connect=10, read=10))
 
-        if response.status_code != 200:
-            raise NameError(f"{name}不存在")
+                    if response.status_code == 200:
+                        return response.json()
+                    else:
+                        print(url)
+                        print(f"请求失败，状态码：{response.status_code}，尝试重新请求...")
+                except httpx.RequestError as e:
+                    print(f"请求错误：{e}，尝试重新请求...")
+                except Exception as e:
+                    print(f"未知错误：{e}，尝试重新请求...")
 
-        return response.json()
+                if attempt < max_retries:
+                    pass
+                else:
+                    raise NameError(f"{name}不存在或请求失败超过最大重试次数")
+        return {}
+
+    def make_rel_data(self, content):
+        for v in content[-10:]:
+            yield {
+                "digests": v.get("digests"),
+                "size": v.get("size"),
+                "upload_time": int(
+                    datetime.datetime.fromisoformat(
+                        v.get("upload_time_iso_8601", "1970-01-01T00:00:00.00000Z")
+                    ).timestamp()
+                ),
+                "file_name": v.get("filename")
+            }
 
     def make_rel(self, content: dict):
         r = []
-        for v in content.keys():
-            r.append(v)
+        for k, v in content.items():
+            r.append({"name": k, "files": list(self.make_rel_data(v))})
         return r
 
     def toHTML(self, type, content):
@@ -54,11 +93,11 @@ class PackDB:
             open(path, "w").write(ret)
             return ret
 
-    def add(self, name: str, desc: str, every_save: bool = True):
+    async def add(self, name: str, desc: str, every_save: bool = True):
         name = name.strip()
         name = name.lower()
         rels = {}
-        print("获取数据中。。。")
+        # print("获取数据中。。。")
         if "内置库" in desc:
             pack_info = {
                 "license": "PSF",
@@ -66,10 +105,10 @@ class PackDB:
                 "home_page": "https://www.python.org",
             }
         else:
-            ret = self.get_info(name)
+            ret = await self.get_info(name)
             pack_info = ret["info"]
             rels = ret["releases"]
-        print("处理数据中。。。")
+        # print("处理数据中。。。")
         raw_requires: list[str] = pack_info.get("requires_dist", [])  # type: ignore
         requires: list[str] = []
         if raw_requires:
@@ -132,7 +171,7 @@ class PackDB:
             "doc_type": pack_info.get("description_content_type"),
             "latest": pack_info.get("version"),
             "keywords": keywords,
-            "releases": self.make_rel(rels),
+            "releases": self.make_rel(rels)[-10:],
         }
 
         if every_save:
@@ -145,21 +184,21 @@ class PackDB:
         self.db[name] = obj
         self.save()
 
-    def update_all(self):
+    async def update_all(self):
         db = self.db.copy()
         n = 0
-        for i in tqdm.tqdm(db.keys()):
-            self.add(i, db[i]["desc"], every_save=False)
+        pbar = tqdm.tqdm(db.keys())
+        for i in pbar:
+            pbar.set_description(f"{i[:11]:11}")
+            await self.add(i, db[i]["desc"], every_save=False)
             n += 1
-            if n % 25 == 0:
-                self.save()
         self.save()
 
     def __len__(self):
         return len(self.db)
 
 
-def main():
+async def main():
     db = PackDB("db.yml")
     while True:
         name = input("请输入包名：")
@@ -170,14 +209,15 @@ def main():
                 continue
         desc = input("请输入介绍：")
         try:
-            db.add(name, desc)
+            await db.add(name, desc)
         except NameError:
             print(f"{name}不存在")
 
 
 if __name__ == "__main__":
-    '''
+
     db = PackDB("db.yml")
-    db.update_all()
-    '''
+    asyncio.run(db.update_all())
+    """
     main()
+    """
