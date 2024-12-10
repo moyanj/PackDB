@@ -1,0 +1,9 @@
+jieba
+aiofiles
+whoosh
+pyyaml
+baidu-translate-api
+fastapi
+uvicorn
+tqdm
+BeautifulSoup4

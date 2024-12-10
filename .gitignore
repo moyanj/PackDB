@@ -1,0 +1,13 @@
+out/
+.cache/
+html/node_modules/
+html/dist
+html/.vscode/
+index.yml
+awesomes.yml
+__pycache__/
+.venv/
+.index/
+html/src/assets/*.json
+out.txt
+stopwords.txt
