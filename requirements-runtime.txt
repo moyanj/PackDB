@@ -7,3 +7,4 @@ fastapi
 uvicorn
 tqdm
 BeautifulSoup4
+msgpack
