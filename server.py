@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Response, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Annotated
 from search import Engine
@@ -23,9 +24,13 @@ class PackageInfo(BaseModel):
     info: dict
 
 
-class BatchResponse(BaseModel):
-    results: dict[str, dict]
-    errors: list[str] = []
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 可以限制为特定的域名
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/search")
@@ -53,14 +58,15 @@ async def get_keys():
 
 
 @app.get("/batch")
-async def get_batch(batch_get_query: Annotated[BatchGetQuery, Query()], response: Response):
+async def get_batch(
+    batch_get_query: Annotated[BatchGetQuery, Query()], response: Response
+):
     need = set(batch_get_query.l.split(","))
     if len(need) > 15:
         response.status_code = 400
         return {"msg": "max is 15"}
 
     ret = {}
-    errors = []
 
     for i in need:
         if not i:
@@ -68,9 +74,9 @@ async def get_batch(batch_get_query: Annotated[BatchGetQuery, Query()], response
         try:
             ret[i] = await db.get(i)
         except KeyError:
-            errors.append(f"{i} not found")
+            return {"msg": f"{i} not found"}
 
-    return BatchResponse(results=ret, errors=errors)
+    return ret
 
 
 @app.get("/health")

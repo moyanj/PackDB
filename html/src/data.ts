@@ -17,108 +17,37 @@ interface PackageInfo {
     releases: string[];
 }
 
-interface DBType { [key: string]: PackageInfo }
-
 class DB {
-    db: DBType;
-    array: Array<{ name: string, data: PackageInfo }>;
-    pageSize: number; // 每页显示的条目数
+    pack_list: Array<string>;
+    baseURL: string; // 每页显示的条目数
     pageNum: number; // 总页数
     currentPage: number; // 当前页码
 
     constructor() {
-        this.db = {};
-        this.array = [];
-        this.pageSize = 10; // 默认每页10条数据
+        this.pack_list = [];
         this.pageNum = 0;
         this.currentPage = 1; // 默认显示第一页
+        this.baseURL = "http://127.0.0.1:8001"
     }
 
     async load() {
-        this.db = await import("./assets/db.json") as unknown as DBType;
-        this.array = Object.entries(this.db).map(([name, info]) => ({ name, data: info }));
-        this.pageNum = Math.ceil(this.array.length / this.pageSize);
-    }
-
-    /*
-        async load(): Promise<void> {
-            try {
-                // 获取当前版本号
-                const currentVersion = await this.getVersion();
-                // 检查本地缓存
-                const cachedVersion = localStorage.getItem("pdb_dbver");
-                if (cachedVersion === currentVersion) {
-                    console.log('Using cached data');
-                    const cachedData = localStorage.getItem("pdb_db");
-                    this.db = cachedData ? JSON.parse(cachedData) : {};
-                    this.array = Object.entries(this.db).map(([name, info]) => ({ name, data: info }));
-                    this.pageNum = Math.ceil(this.array.length / this.pageSize);
-                } else {
-                    // 下载新的数据库文件
-                    await this.downloadDatabase();
-                    // 更新本地存储
-                    localStorage.setItem("pdb_dbver", currentVersion);
-                    localStorage.setItem("pdb_db", JSON.stringify(this.db));
-                }
-            } catch (error) {
-                console.error('Request or parsing failed with error: ', error);
-                this.db = {};
-                this.array = [];
-                throw error;
-            }
-        }
-    
-        async getVersion(): Promise<string> {
-            return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/ver.txt', true);
-                xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        resolve(xhr.responseText.trim());
-                    } else {
-                        reject(new Error('Failed to get version'));
-                    }
-                };
-                xhr.onerror = () => {
-                    reject(new Error('Network error'));
-                };
-                xhr.send();
-            });
-        }
-    
-        async downloadDatabase(): Promise<void> {
-            return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/db.msgpack', true);
-                xhr.responseType = 'arraybuffer';
-                xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        const data = decode(new Uint8Array(xhr.response));
-                        this.db = data;
-                        this.array = Object.entries(data).map(([name, info]) => ({ name, data: info })) as  Array<{ name: string, data: PackageInfo }>;
-                        this.pageNum = Math.ceil(this.array.length / this.pageSize);
-                        resolve();
-                    } else {
-                        reject(new Error('Failed to download database'));
-                    }
-                };
-                xhr.onerror = () => {
-                    reject(new Error('Network error'));
-                };
-                xhr.send();
-            });
-        }
-    */
-    toArray() {
-        return this.array;
+        this.pack_list = await (await fetch(this.baseURL + "/packs")).json() as Array<string>
+        this.pageNum = Math.ceil(this.pack_list.length / 10);
     }
 
     // 获取当前页的数据
-    getCurrentPageData(): Array<{ name: string, data: PackageInfo }> {
-        const start = (this.currentPage - 1) * this.pageSize;
-        const end = this.currentPage * this.pageSize;
-        return this.array.slice(start, end);
+    async getCurrentPageData(): Promise<Array<{ name: string, data: PackageInfo }>> {
+        const start = (this.currentPage - 1) * 10;
+        const end = this.currentPage * 10;
+        const names = this.pack_list.slice(start, end).join(",")
+        console.log(names)
+        var ret = await (await fetch(this.baseURL + "/batch?l=" + names)).json()
+        ret = Object.entries(ret).map(([name, info]) => ({ name, data: info }));
+
+        return ret
     }
+    
+
 
     // 切换到下一页
     nextPage(): boolean {
@@ -148,12 +77,12 @@ class DB {
     }
 
     getLength(): number {
-        return this.array.length;
+        return this.pack_list.length;
     }
 
-    get(name: string): PackageInfo | null {
-        if (name in this.db) {
-            return this.db[name]
+    async get(name: string): Promise<PackageInfo | null> {
+        if (name in this.pack_list) {
+            return await fetch(this.baseURL + "/pack/" + name) as unknown as PackageInfo
         }
         return null;
     }

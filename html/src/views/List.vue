@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { ElCard, ElScrollbar, ElRow, ElCol, ElButton, ElPagination } from 'element-plus';
 import badger from '../components/badger.vue';
 
-const data = ref(db.getCurrentPageData())
+const data = ref()
 function ts2date(ts: number) {
     let date = new Date(ts * 1000);
 
@@ -21,21 +21,21 @@ function to(url: string) {
     window.open(url);
 }
 
-function prev() {
+async function prev() {
     db.prevPage()
-    data.value = db.getCurrentPageData()
+    data.value = await db.getCurrentPageData()
 }
-
-function next() {
+async function next() {
     db.nextPage()
-    data.value = db.getCurrentPageData();
+    data.value = await db.getCurrentPageData();
 }
 
-function currentChange(n: number) {
+async function currentChange(n: number) {
     console.log(n)
     db.goToPage(n);
-    data.value = db.getCurrentPageData();
+    data.value = await db.getCurrentPageData();
 }
+currentChange(1);
 </script>
 
 <template>
@@ -110,5 +110,4 @@ p {
     justify-content: center;
     height: 10%;
 }
-
 </style>
