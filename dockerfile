@@ -6,8 +6,6 @@ WORKDIR /app
 # 复制 requirements.txt 和 make 脚本
 COPY . /app/
 
-# 使 make 脚本可执行
-RUN chmod +x /app/make
 #RUN apt update && apt install gcc -y
 # 安装依赖
 RUN pip install --no-cache-dir -r requirements-runtime.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple

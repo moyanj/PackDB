@@ -1,10 +1,12 @@
-import { createApp } from 'vue'
-import 'element-plus/dist/index.css'
-import 'element-plus/theme-chalk/dark/css-vars.css'
-import 'bootstrap-icons/font/bootstrap-icons.min.css'
-import './style.css'
-import App from './App.vue'
-import { router } from './route'
+import { createApp } from 'vue';
+import 'element-plus/dist/index.css';
+import 'element-plus/theme-chalk/dark/css-vars.css';
+import 'bootstrap-icons/font/bootstrap-icons.min.css';
+// @ts-ignore
+import 'github-markdown-css';
+import './style.css';
+import App from './App.vue';
+import { router } from './route';
 import { db } from './data';
 
 async function main() {

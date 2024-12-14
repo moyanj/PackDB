@@ -1,4 +1,22 @@
-interface PackageInfo {
+export interface ReleasesFileInfo {
+    size: number;
+    upload_time: number;
+    file_name: string;
+    digests: {
+        md5: string,
+        sha256: string,
+        blake2b_256: string
+    }
+    
+}
+
+export interface ReleasesInfo {
+    name: string;
+    files: Array<ReleasesFileInfo>;
+
+}
+
+export interface PackageInfo {
     desc: string;
     url: string;
     requires: string[];
@@ -11,10 +29,10 @@ interface PackageInfo {
     project_urls: { [key: string]: string };
     add_time: number;
     doc: string;
-    doc_type: string;
+    doc_html: string;
     latest: string;
     keywords: string[];
-    releases: string[];
+    releases: ReleasesInfo[];
 }
 
 class DB {
@@ -27,7 +45,7 @@ class DB {
         this.pack_list = [];
         this.pageNum = 0;
         this.currentPage = 1; // 默认显示第一页
-        this.baseURL = "http://127.0.0.1:8001"
+        this.baseURL = "http://127.0.0.1:8000"
     }
 
     async load() {
@@ -46,7 +64,7 @@ class DB {
 
         return ret
     }
-    
+
 
 
     // 切换到下一页
@@ -80,11 +98,9 @@ class DB {
         return this.pack_list.length;
     }
 
-    async get(name: string): Promise<PackageInfo | null> {
-        if (name in this.pack_list) {
-            return await fetch(this.baseURL + "/pack/" + name) as unknown as PackageInfo
-        }
-        return null;
+    async get(name: string): Promise<PackageInfo> {
+        let f = await fetch(this.baseURL + "/pack/" + name)
+        return await (await f.json()).info as unknown as PackageInfo
     }
 }
 

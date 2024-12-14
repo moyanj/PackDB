@@ -2,11 +2,6 @@
     font-family: "MiSans", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
-a {
-    color: var(--el-text-color-primary);
-    text-decoration: none;
-}
-
 body {
     margin: 8px;
     overflow: hidden;
