@@ -35,7 +35,7 @@ export interface PackageInfo {
     releases: ReleasesInfo[];
 }
 
-class DB {
+export class DB {
     pack_list: Array<string>;
     baseURL: string; // 每页显示的条目数
     pageNum: number; // 总页数
@@ -58,9 +58,13 @@ class DB {
         const start = (this.currentPage - 1) * 10;
         const end = this.currentPage * 10;
         const names = this.pack_list.slice(start, end).join(",")
-        console.log(names)
-        var ret = await (await fetch(this.baseURL + "/batch?l=" + names)).json()
-        ret = Object.entries(ret).map(([name, info]) => ({ name, data: info }));
+        try {
+            var ret = await (await fetch(this.baseURL + "/batch?l=" + names)).json()
+            ret = Object.entries(ret).map(([name, info]) => ({ name, data: info }));
+        } catch (error) {
+            ret = []
+        }
+        
 
         return ret
     }
