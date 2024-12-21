@@ -28,13 +28,13 @@ en_analyzer = StemmingAnalyzer()
 
 class PackageSchema(SchemaClass):
     name = TEXT(stored=True, analyzer=en_analyzer)
-    desc = TEXT(stored=True, analyzer=zh_analyzer)
-    pypi_desc = TEXT(stored=True, analyzer=en_analyzer)
-    pypi_desc_zh = TEXT(stored=True, analyzer=zh_analyzer)
-    doc = TEXT(stored=True, analyzer=en_analyzer)
-    doc_zh = TEXT(stored=True, analyzer=zh_analyzer)
-    hash = KEYWORD(stored=True)
-    keywords = KEYWORD(stored=True)
+    desc = TEXT(analyzer=zh_analyzer)
+    pypi_desc = TEXT(analyzer=en_analyzer)
+    pypi_desc_zh = TEXT(analyzer=zh_analyzer)
+    doc = TEXT(analyzer=en_analyzer)
+    doc_zh = TEXT(analyzer=zh_analyzer)
+    hash = KEYWORD()
+    keywords = KEYWORD()
 
 
 class Indexing:

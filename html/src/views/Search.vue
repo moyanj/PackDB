@@ -27,8 +27,9 @@ watch(
             db = new Engine(searchQuery.value);
             await db.load()
             data_length.value = db.getLength();
-            if (data_length)
-            await currentChange(1)
+            if (data_length.value > 0) {
+                data.value = await db.getCurrentPageData();
+            }
         }
     },
     { immediate: true }
@@ -75,11 +76,13 @@ async function currentChange(n: number) {
         </el-col>
     </el-row>
 
-    <el-scrollbar class="packs">
-        <pack v-for="i in data" :i="i as Record<string, any>" />
+    <el-scrollbar class="packs" v-if="data_length > 0">
+        <pack v-for="i in data" :i="i" />
+
     </el-scrollbar>
-    <div class="page">
-        <el-pagination layout="prev, pager, next" :total="data_length" :page-size="10" @prev-click="prev"
+    <div v-else>没有找到相关内容</div>
+    <div class="page" v-if="data_length > 0">
+        <el-pagination layout="prev, pager, next" :total="data_length" :page-size="15" @prev-click="prev"
             @next-click="next" @current-change="currentChange" />
     </div>
 </template>

@@ -3,9 +3,9 @@ import { ElRow, ElCol, ElCard, ElButton } from 'element-plus';
 import badger from './badger.vue';
 import { PackageInfo } from '../data';
 
-const props = defineProps({
-    i: Object
-})
+const props = defineProps<{
+    i: { name: string, data: PackageInfo } | null
+}>()
 
 const i = props.i as { name: string, data: PackageInfo };
 function ts2date(ts: number) {

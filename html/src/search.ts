@@ -7,7 +7,13 @@ export class Engine extends DB {
         this.q = q;
     }
     async load() {
-        this.pack_list = await (await fetch(this.baseURL + "/search?q=" + this.q)).json() as Array<string>
+        try {
+            let res = await fetch(this.baseURL + "/search?q=" + this.q)
+            this.pack_list = await res.json() as Array<string>
+        } catch (error) {
+            console.error(error)
+            this.pack_list = []
+        }
         this.pageNum = Math.ceil(this.pack_list.length / 10);
     }
 }

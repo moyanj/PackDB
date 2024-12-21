@@ -12,11 +12,11 @@ db = DB("db")
 
 
 class SearchQuery(BaseModel):
-    q: str = Field(..., min_length=2)  # 查询参数，最小长度为1
+    q: str = Field(...)  # 查询参数
 
 
 class BatchGetQuery(BaseModel):
-    l: str = Field(..., min_length=1)  # 逗号分隔的查询参数列表
+    l: str = Field(...)  # 逗号分隔的查询参数列表
 
 
 class PackageInfo(BaseModel):
@@ -87,4 +87,4 @@ async def read_root():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

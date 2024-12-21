@@ -193,7 +193,7 @@ class PackDB:
 
 
 async def main():
-    db = PackDB("db.yml")
+    db = PackDB("db")
     while True:
         name = input("请输入包名：")
         if name.lower() in db.db:
@@ -210,9 +210,10 @@ async def main():
 
 
 if __name__ == "__main__":
-
+   
     db = PackDB("db")
     asyncio.run(db.update_all())
     """
-    main()
+    asyncio.run(main())
     """
+    
