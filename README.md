@@ -13,7 +13,7 @@
 
 ### 如何使用
 
-1. **浏览包列表**：访问PackDB网站，浏览我们精心分类的Python包列表。
+1. **浏览包列表**：访问[PackDB](https://packdb.moyanjdc.top/)网站，浏览我们精心分类的Python包列表。
 2. **搜索包**：使用搜索栏，输入关键词快速找到你需要的包。
 3. **查看详情**：点击感兴趣的包，查看其详细描述、安装指南和使用示例。
 4. **提交包**：如果你有一个Python包想要分享，或者发现了一个很棒的包，可以通过我们的提交流程将其添加到PackDB。
@@ -24,7 +24,7 @@
 
 ### 开源协议
 
-PackDB的内容遵循[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。PackDB网站及其后端服务遵循[MIT](LICENSE)协议。由pypi网站上爬取的信息遵循其原始协议。我们鼓励自由使用和修改，但请遵守开源协议的规定。
+[PackDB](https://packdb.moyanjdc.top/)的内容遵循[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[PackDB网站](https://packdb.moyanjdc.top/)及其后端服务遵循[MIT](LICENSE)协议。由pypi网站上爬取的信息遵循其原始协议。我们鼓励自由使用和修改，但请遵守开源协议的规定。
 
 ### 联系我们
 
@@ -35,4 +35,4 @@ PackDB的内容遵循[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)�
 
 ### 开始探索
 
-现在就开始探索PackDB，发现那些让代码飞起来的Python包吧！
+现在就开始探索[PackDB](https://packdb.moyanjdc.top/)，发现那些让代码飞起来的Python包吧！
