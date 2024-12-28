@@ -24,7 +24,7 @@ PackDB是一个第三方网站，旨在收集和展示那些使Python开发更�
 
 ### 开源协议
 
-PackDB网站和其内容遵循[MIT License](LICENSE.md)。我们鼓励自由使用和修改，但请遵守开源协议的规定。
+PackDB的内容遵循[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。PackDB网站及其后端服务遵循[MIT](LICENSE)协议。由pypi网站上爬取的信息原始协议。我们鼓励自由使用和修改，但请遵守开源协议的规定。
 
 ### 联系我们
 
