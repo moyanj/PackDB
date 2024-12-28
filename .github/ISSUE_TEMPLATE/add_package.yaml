@@ -1,0 +1,26 @@
+name: New Package
+description: Propose to add new packages to PackDB
+title: "Add packages: "
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for considering contributing to PackDB. It is people like you who make our community so wonderful.
+  - type: input
+    id: pack_name
+    attributes:
+      label: Package Name
+      description: What is the name of this package?
+      placeholder: requests
+    validations:
+      required: true
+
+  - type: input
+    id: description
+    attributes:
+      label: Description
+      description: A brief Chinese description of this package
+      placeholder: A fast, simple, reliable HTTP library for Python, written for human beings.
+    validations:
+      required: true
