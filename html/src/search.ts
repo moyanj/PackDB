@@ -1,4 +1,4 @@
-import { DB, PackageInfo } from "./data";
+import { DB } from "./data";
 
 export class Engine extends DB {
     q: string

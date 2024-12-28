@@ -1,17 +1,11 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import HomeView from './views/Home.vue'
-import SearchView from './views/Search.vue'
-import ListView from './views/List.vue'
-import AboutView from './views/About.vue'
-import PackageView from './views/Package.vue'
-
 const routes = [
-    { path: '/', component: HomeView },
-    { path: '/search', component: SearchView },
-    { path: '/list', component: ListView },
-    { path: '/about', component: AboutView },
-    { path: '/package/:name', component: PackageView }
+    { path: '/', component: () => import('./views/Home.vue') },
+    { path: '/search', component: () => import('./views/Search.vue') },
+    { path: '/list', component: () => import('./views/List.vue') },
+    { path: '/about', component: () => import('./views/About.vue') },
+    { path: '/package/:name', component: () => import('./views/Package.vue') }
 ]
 
 export const router = createRouter({
