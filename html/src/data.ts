@@ -45,7 +45,7 @@ export class DB {
         this.pack_list = [];
         this.pageNum = 0;
         this.currentPage = 1; // 默认显示第一页
-        this.baseURL = "http://127.0.0.1:8000"
+        this.baseURL = "https://packdbapi.moyanjdc.top"
     }
 
     async load() {
