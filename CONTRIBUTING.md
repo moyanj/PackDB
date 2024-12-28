@@ -5,7 +5,7 @@
 ### 添加新的包
 1. 确保该包不在 PackDB 中。
 2. 确保该包在 [pypi](https://pypi.org/) 上存在，并且至少发布了一天。
-3. 提出issue，描述您要添加的包。
+3. [提出issue](https://github.com/moyanj/PackDB/issues/new?template=add_package.yaml&title=Add+packages%3A+)，描述您要添加的包。
 
 ### 添加新功能
 
