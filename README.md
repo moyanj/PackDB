@@ -1,8 +1,8 @@
-# PackDB
+# [PackDB](https://packdb.moyanjdc.top/)
 
 ## 发现那些让代码飞起来的Python包
 
-PackDB是一个第三方网站，旨在收集和展示那些使Python开发更加高效和有趣的Python包。我们的目标是为开发者提供一个集中的平台，让他们能够轻松发现和探索各种Python库，从而加速开发流程并激发创新。
+[PackDB](https://packdb.moyanjdc.top/)是一个第三方网站，旨在收集和展示那些使Python开发更加高效和有趣的Python包。我们的目标是为开发者提供一个集中的平台，让他们能够轻松发现和探索各种Python库，从而加速开发流程并激发创新。
 
 ### 特点
 
