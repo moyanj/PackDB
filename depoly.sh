@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 定义变量
-GIT_REPO_PATH="/firefly/packdb" # 替换为你的Git仓库本地路径
+GIT_REPO_PATH="/firefly/PackDB" # 替换为你的Git仓库本地路径
 IMAGE_NAME="packdb" # 你想要构建的Docker镜像名称的基础名称
 CONTAINER_NAME="packdb" # 你想要部署的容器名称
 PORTS="-p 12112:80" # 映射的端口，根据你的应用需求修改
