@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ElRow, ElCol, ElInput, ElButton, ElScrollbar, ElPagination } from 'element-plus';
+import { ElRow, ElCol, ElInput, ElButton, ElScrollbar, ElPagination, ElEmpty } from 'element-plus';
 import { ref, watch, Ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { Engine } from '../search';
@@ -84,7 +84,9 @@ async function currentChange(n: number) {
         <pack v-for="i in data" :i="i" />
 
     </el-scrollbar>
-    <div v-else>没有找到相关内容</div>
+    <div  v-if="$route.query.q && data_length <= 0">
+        <el-empty description="没有找到相关包" />
+    </div>
     <div class="page" v-if="data_length > 0">
         <el-pagination layout="prev, pager, next" :total="data_length" :page-size="15" @prev-click="prev"
             @next-click="next" @current-change="currentChange" />
