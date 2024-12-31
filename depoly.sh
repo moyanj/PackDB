@@ -4,7 +4,7 @@
 GIT_REPO_PATH="/firefly/PackDB" # 替换为你的Git仓库本地路径
 IMAGE_NAME="packdb" # 你想要构建的Docker镜像名称的基础名称
 CONTAINER_NAME="packdb" # 你想要部署的容器名称
-PORTS="-p 12112:80" # 映射的端口，根据你的应用需求修改
+PORTS="-p 12112:8000" # 映射的端口，根据你的应用需求修改
 
 # 获取当前日期作为镜像版本
 DATE=$(date +%Y%m%d)
