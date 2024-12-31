@@ -1,3 +1,4 @@
+import { ElLoading } from "element-plus";
 export interface ReleasesFileInfo {
     size: number;
     upload_time: number;
@@ -55,6 +56,7 @@ export class DB {
 
     // 获取当前页的数据
     async getCurrentPageData(): Promise<Array<{ name: string, data: PackageInfo }>> {
+        ElLoading.service();
         const start = (this.currentPage - 1) * 10;
         const end = this.currentPage * 10;
         const names = this.pack_list.slice(start, end).join(",")
@@ -65,7 +67,7 @@ export class DB {
             ret = []
         }
         
-
+        ElLoading.service().close();
         return ret
     }
 
