@@ -32,7 +32,7 @@ fi
 source .venv/bin/activate
 python search.py
 # 构建Docker镜像
-echo "构建$(FULL_IMAGE_NAME)镜像..."
+echo "构建镜像中..."
 docker build -t $FULL_IMAGE_NAME .
 if [ $? -ne 0 ]; then
     echo "构建Docker镜像失败"
