@@ -1,24 +1,34 @@
 <script setup lang="ts">
 import { db } from '../data'
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import { ElScrollbar, ElPagination } from 'element-plus';
 import pack from '../components/pack.vue';
 
-const data = ref()
-
-async function prev() {
+const data = ref({});
+function prev() {
+    data.value = {};
     db.prevPage()
-    data.value = await db.getCurrentPageData()
+    db.getCurrentPageData().then(v => {
+        nextTick(() => { data.value = v; })
+    })
+
 }
-async function next() {
+function next() {
+    data.value = {};
     db.nextPage()
-    data.value = await db.getCurrentPageData();
+    db.getCurrentPageData().then(v => {
+        nextTick(() => { data.value = v; })
+    })
+
 }
 
-async function currentChange(n: number) {
-    console.log(n)
+function currentChange(n: number) {
+    data.value = {};
     db.goToPage(n);
-    data.value = await db.getCurrentPageData();
+    db.getCurrentPageData().then(v => {
+        nextTick(() => { data.value = v; })
+    })
+
 }
 currentChange(1);
 </script>
