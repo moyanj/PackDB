@@ -21,7 +21,7 @@
 ### 贡献指南
 
 我们欢迎社区的贡献，无论是添加新的包、更新现有信息，还是修复错误。请遵循我们的[贡献指南](CONTRIBUTING.md)来提交你的贡献。
-
+ 
 ### 开源协议
 
 [PackDB](https://packdb.moyanjdc.top/)的内容遵循[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[PackDB网站](https://packdb.moyanjdc.top/)及其后端服务遵循[MIT](LICENSE)协议。由pypi网站上爬取的信息遵循其原始协议。我们鼓励自由使用和修改，但请遵守开源协议的规定。
